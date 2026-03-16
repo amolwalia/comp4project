@@ -43,4 +43,4 @@ services:
 
 databases:
   - name: wishlist-orb-db
-    plan: basic-256mb
+    plan: free
