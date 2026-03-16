@@ -5,7 +5,8 @@
   "type": "commonjs",
   "scripts": {
     "dev": "node --watch index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "echo \"No server build step\""
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

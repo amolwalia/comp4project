@@ -6,7 +6,8 @@
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "server": "npm run dev --prefix server",
     "client": "npm run dev --prefix client",
-    "build": "npm run build --prefix client"
+    "build": "npm run build --prefix client",
+    "start": "npm start --prefix server"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
