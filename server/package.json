@@ -4,7 +4,9 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
+    "db:init": "node scripts/runSchema.js",
     "dev": "node --watch index.js",
+    "start:render": "npm run db:init && npm start",
     "start": "node index.js"
   },
   "dependencies": {
@@ -17,4 +19,3 @@
     "pg": "^8.13.3"
   }
 }
-

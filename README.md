@@ -145,3 +145,56 @@ The codebase is organized so you can add social features without changing the co
 - The frontend uses `fetch` with `credentials: include` so the auth cookie is sent automatically.
 - The backend enables CORS for the configured client URL and sets an HTTP-only cookie for the JWT.
 - The orb visualization is implemented with plain React state, CSS 3D transforms, and Fibonacci sphere distribution for item layout.
+
+## Deploying To Render
+
+This repo now includes a Render Blueprint at `render.yaml` that creates:
+
+- a static site for `client`
+- a web service for `server`
+- a managed PostgreSQL database
+
+### Recommended setup
+
+1. Push this repo to GitHub.
+2. In Render, click `New` -> `Blueprint`.
+3. Select the repo and deploy the `render.yaml` file.
+4. When Render prompts for values:
+   - set `CLIENT_URL` on `wishlist-orb-api` to your frontend URL, for example `https://wishlist-orb-client.onrender.com`
+   - set `VITE_API_URL` on `wishlist-orb-client` to your backend API URL, for example `https://wishlist-orb-api.onrender.com/api`
+5. After the first deploy finishes, if either URL changed from the example above, update the matching environment variable and redeploy the affected service.
+
+### Why the Render setup is split
+
+- `client` is a Vite frontend, so Render should host it as a static site.
+- `server` is an Express API, so Render should host it as a web service.
+- The API starts with `npm run start:render`, which applies `server/db/sql/schema.sql` before the Express server boots.
+
+### Important production detail
+
+Because the frontend and API are usually on different Render subdomains, authentication cookies must be cross-site in production. The server now defaults production cookies to `SameSite=None` with `Secure`, which is required for login sessions to persist across the two Render services.
+
+### Manual alternative
+
+If you do not want to use the Blueprint, create these manually in the Render dashboard:
+
+- Static Site
+  - Root Directory: `client`
+  - Build Command: `npm install && npm run build`
+  - Publish Directory: `dist`
+  - Environment Variable: `VITE_API_URL=https://<your-api-service>.onrender.com/api`
+  - Rewrite Rule: `/*` -> `/index.html`
+
+- Web Service
+  - Root Directory: `server`
+  - Build Command: `npm install`
+  - Start Command: `npm run start:render`
+  - Health Check Path: `/api/health`
+  - Environment Variables:
+    - `NODE_ENV=production`
+    - `CLIENT_URL=https://<your-static-site>.onrender.com`
+    - `JWT_SECRET=<long random secret>`
+    - `JWT_EXPIRES_IN=7d`
+    - `COOKIE_NAME=wishlist_orb_token`
+    - `COOKIE_SAME_SITE=none`
+    - `DATABASE_URL=<Render Postgres internal connection string>`
