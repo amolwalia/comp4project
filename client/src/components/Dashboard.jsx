@@ -24,6 +24,8 @@ export default function Dashboard() {
   const [saving, setSaving] = useState(false);
   const [modalError, setModalError] = useState('');
   const [pageError, setPageError] = useState('');
+  const [moodboardOnly, setMoodboardOnly] = useState(false);
+  const [moodboardPulse, setMoodboardPulse] = useState(false);
 
   useEffect(() => {
     loadWishlist();
@@ -108,13 +110,18 @@ export default function Dashboard() {
     await logout();
   }
 
+  function handleMoodboardToggle() {
+    setMoodboardOnly((current) => !current);
+    setMoodboardPulse(true);
+  }
+
   if (loading) {
     return <LoadingScreen />;
   }
 
   return (
     <>
-      <div className="dashboard-shell">
+      <div className={`dashboard-shell ${moodboardOnly ? 'dashboard-shell--moodboard' : ''}`}>
         <header className="dashboard-header">
           <div>
             <span className="eyebrow">Personal space</span>
@@ -122,9 +129,6 @@ export default function Dashboard() {
             <p>Everything here is private to your account until future sharing controls are enabled.</p>
           </div>
           <div className="header-actions">
-            <button type="button" className="primary-button" onClick={openCreateModal}>
-              Add item
-            </button>
             <button type="button" className="ghost-button" onClick={handleLogout}>
               Log out
             </button>
@@ -136,14 +140,25 @@ export default function Dashboard() {
         <StatsPanel stats={wishlist.stats} />
 
         <div className="dashboard-grid">
-          <OrbSphere items={wishlist.items} activeItem={activeItem} onSelect={setActiveItem} />
+          <OrbSphere
+            items={wishlist.items}
+            activeItem={activeItem}
+            onSelect={setActiveItem}
+            moodboardOnly={moodboardOnly}
+            onToggleMoodboard={handleMoodboardToggle}
+            moodboardPulse={moodboardPulse}
+            onMoodboardPulseEnd={() => setMoodboardPulse(false)}
+          />
           <section className="panel">
-            <div className="panel-header">
+            <div className="panel-header panel-header--inventory">
               <div>
                 <span className="eyebrow">Inventory</span>
                 <h2>Wishlist items</h2>
+                <p>{wishlist.items.length ? 'Manage each product here.' : 'Start by adding your first item.'}</p>
               </div>
-              <p>{wishlist.items.length ? 'Manage each product here.' : 'Start by adding your first item.'}</p>
+              <button type="button" className="primary-button" onClick={openCreateModal}>
+                Add item
+              </button>
             </div>
 
             <WishlistList
