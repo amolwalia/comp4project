@@ -10,10 +10,11 @@ const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
 const app = express();
 const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+const allowedOrigins = [clientUrl, 'http://localhost:5176'];
 
 app.use(
   cors({
-    origin: clientUrl,
+    origin: allowedOrigins,
     credentials: true
   })
 );
@@ -31,4 +32,3 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 module.exports = app;
-

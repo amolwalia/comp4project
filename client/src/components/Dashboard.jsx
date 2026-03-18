@@ -149,7 +149,7 @@ export default function Dashboard() {
             moodboardPulse={moodboardPulse}
             onMoodboardPulseEnd={() => setMoodboardPulse(false)}
           />
-          <section className="panel">
+          <section className="panel panel--inventory">
             <div className="panel-header panel-header--inventory">
               <div>
                 <span className="eyebrow">Inventory</span>
