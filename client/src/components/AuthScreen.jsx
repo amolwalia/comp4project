@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 const initialForm = {
-  name: '',
-  email: '',
-  password: ''
+  name: "",
+  email: "",
+  password: "",
 };
 
 export default function AuthScreen() {
   const { login, signup } = useAuth();
-  const [mode, setMode] = useState('login');
+  const [mode, setMode] = useState("login");
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   function updateField(event) {
     const { name, value } = event.target;
@@ -21,21 +21,21 @@ export default function AuthScreen() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setError('');
+    setError("");
     setSubmitting(true);
 
     try {
-      if (mode === 'signup') {
+      if (mode === "signup") {
         await signup(form);
       } else {
         await login({
           email: form.email,
-          password: form.password
+          password: form.password,
         });
       }
       setForm(initialForm);
     } catch (submitError) {
-      setError(submitError.details?.join(' ') || submitError.message);
+      setError(submitError.details?.join(" ") || submitError.message);
     } finally {
       setSubmitting(false);
     }
@@ -43,50 +43,53 @@ export default function AuthScreen() {
 
   function switchMode(nextMode) {
     setMode(nextMode);
-    setError('');
+    setError("");
   }
 
   return (
     <div className="auth-layout">
       <section className="auth-panel auth-intro">
-        <span className="eyebrow">Private by default</span>
-        <h1>Wishlist Orb</h1>
+        <span className="eyebrow">Dream it. Track it. Own it.</span>
+        <h1>Wishlist App</h1>
         <p>
-          A personal wishlist designed as a floating constellation. Add products, track value, and
-          keep the entire experience scoped to your account.
+          A personal wishlist designed as a floating constellation. Add
+          products, track value, and keep the entire experience scoped to your
+          account.
         </p>
-        <div className="intro-card">
+        {/* <div className="intro-card">
           <p>Planned next:</p>
           <ul>
             <li>Public or private orb visibility controls</li>
             <li>Friend viewing and shared links</li>
             <li>Selective sharing without changing the core data model</li>
           </ul>
-        </div>
+        </div> */}
       </section>
 
       <section className="auth-panel auth-form-panel">
         <div className="auth-tabs">
           <button
             type="button"
-            className={mode === 'login' ? 'active' : ''}
-            onClick={() => switchMode('login')}
+            className={mode === "login" ? "active" : ""}
+            onClick={() => switchMode("login")}
           >
             Log in
           </button>
           <button
             type="button"
-            className={mode === 'signup' ? 'active' : ''}
-            onClick={() => switchMode('signup')}
+            className={mode === "signup" ? "active" : ""}
+            onClick={() => switchMode("signup")}
           >
             Sign up
           </button>
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <h2>{mode === 'signup' ? 'Create your private orb' : 'Welcome back'}</h2>
+          <h2>
+            {mode === "signup" ? "Create your private orb" : "Welcome back"}
+          </h2>
 
-          {mode === 'signup' && (
+          {mode === "signup" && (
             <label>
               <span>Name</span>
               <input
@@ -122,19 +125,28 @@ export default function AuthScreen() {
               placeholder="At least 8 characters"
               value={form.password}
               onChange={updateField}
-              autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+              autoComplete={
+                mode === "signup" ? "new-password" : "current-password"
+              }
               required
             />
           </label>
 
           {error ? <div className="form-error">{error}</div> : null}
 
-          <button className="primary-button" type="submit" disabled={submitting}>
-            {submitting ? 'Please wait...' : mode === 'signup' ? 'Create account' : 'Log in'}
+          <button
+            className="primary-button"
+            type="submit"
+            disabled={submitting}
+          >
+            {submitting
+              ? "Please wait..."
+              : mode === "signup"
+                ? "Create account"
+                : "Log in"}
           </button>
         </form>
       </section>
     </div>
   );
 }
-
