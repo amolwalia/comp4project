@@ -1,10 +1,10 @@
-# Wishlist App
+# Wishlist App ✨
 
 A full-stack wishlist application built with React, Vite, Express, and PostgreSQL. Users can create an account, log in securely, manage wishlist items, and explore them through a mood board style dashboard with item previews, stats, and theme switching.
 
-Live app: https://wishlist-orb-client.onrender.com/
+Live app: https://wishlist-orb-client.onrender.com/ 🚀
 
-## Current Experience
+## Current Experience 🎨
 
 - Account signup, login, session restore, and logout
 - Private wishlist CRUD for each authenticated user
@@ -14,7 +14,7 @@ Live app: https://wishlist-orb-client.onrender.com/
 - Light and dark theme toggle
 - Responsive auth flow and dashboard layout
 
-## Tech Stack
+## Tech Stack 🛠️
 
 - Frontend: React 18, Vite, CSS, Framer Motion
 - Backend: Node.js, Express
@@ -22,7 +22,7 @@ Live app: https://wishlist-orb-client.onrender.com/
 - Authentication: JWT stored in an HTTP-only cookie
 - Deployment: Render Blueprint via [`render.yaml`]
 
-## Project Structure
+## Project Structure 📁
 
 ```text
 .
@@ -46,13 +46,13 @@ Live app: https://wishlist-orb-client.onrender.com/
 └── package.json
 ```
 
-## Running Locally
+## Running Locally 💻
 
-### 1. Create the database
+### 1. Create the database 🗄️
 
 Create a PostgreSQL database named `wishlist_orb`.
 
-### 2. Install dependencies
+### 2. Install dependencies 📦
 
 From the project root:
 
@@ -62,7 +62,7 @@ cd server && npm install
 cd ../client && npm install
 ```
 
-### 3. Configure environment files
+### 3. Configure environment files ⚙️
 
 Server:
 
@@ -70,7 +70,7 @@ Server:
 cp server/.env.example server/.env
 ```
 
-Update [`server/.env.example`](/Users/amolwalia/Desktop/2.2/comp%20proj/server/.env.example) values as needed, especially:
+Update [`server/.env.example`] values as needed, especially:
 
 - `DATABASE_URL`
 - `JWT_SECRET`
@@ -88,7 +88,7 @@ Default client env:
 VITE_API_URL=http://localhost:4000/api
 ```
 
-### 4. Initialize the database schema
+### 4. Initialize the database schema 🧱
 
 Run:
 
@@ -97,9 +97,9 @@ cd server
 npm run db:init
 ```
 
-This applies [`server/db/sql/schema.sql`](/Users/amolwalia/Desktop/2.2/comp%20proj/server/db/sql/schema.sql).
+This applies [`server/db/sql/schema.sql`].
 
-### 5. Start the app
+### 5. Start the app ▶️
 
 From the project root:
 
@@ -112,23 +112,23 @@ Local URLs:
 - Frontend: `http://localhost:5173`
 - Backend: `http://localhost:4000`
 
-## API Overview
+## API Overview 🔌
 
-### Auth
+### Auth 🔐
 
 - `POST /api/auth/signup`
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `GET /api/auth/me`
 
-### Wishlist
+### Wishlist 📝
 
 - `GET /api/wishlist`
 - `POST /api/wishlist`
 - `PUT /api/wishlist/:id`
 - `DELETE /api/wishlist/:id`
 
-## Team Contributions
+## Team Contributions 🤝
 
 Based on the current git history:
 
@@ -138,7 +138,7 @@ Based on the current git history:
   - Added Render deployment support, schema bootstrap script, environment setup, and deployment documentation
   - Updated app titles and core naming in the interface
 
-- Vikatoriia Monakova
+- Viktoriia Monakova
   - Reworked the mood board UI and animations
   - Updated [`FloatingWishlistBoard.jsx`], dashboard layout behavior, and styling
   - Improved inventory panel behavior and related frontend presentation
@@ -149,7 +149,7 @@ Based on the current git history:
   - Implemented the theme toggle and related theme context updates
   - Contributed dashboard and global styling changes tied to the new theme system
 
-## Deployment
+## Deployment ☁️
 
 This repo includes a Render Blueprint in [`render.yaml`] for:
 
@@ -157,6 +157,6 @@ This repo includes a Render Blueprint in [`render.yaml`] for:
 - `wishlist-orb-api`
 - `wishlist-orb-db`
 
-The deployed frontend is available here:
+The deployed frontend is available here 🌐:
 
 https://wishlist-orb-client.onrender.com/
