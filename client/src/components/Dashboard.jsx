@@ -5,6 +5,7 @@ import ItemModal from "./ItemModal";
 import LoadingScreen from "./LoadingScreen";
 import OrbSphere from "./OrbSphere";
 import StatsPanel from "./StatsPanel";
+import ThemeToggle from "./ThemeToggle";
 import WishlistList from "./WishlistList";
 
 const emptyState = {
@@ -137,6 +138,7 @@ export default function Dashboard() {
             <p>Everything you want, all in one view.</p>
           </div>
           <div className="header-actions">
+            <ThemeToggle />
             <button
               type="button"
               className="ghost-button"
