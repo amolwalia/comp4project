@@ -1,13 +1,26 @@
-# Wishlist Orb MVP
+# Wishlist App
 
-Full-stack wishlist web app with React, Express, PostgreSQL, cookie-based JWT authentication, and a premium orb-style visualization for each user's private wishlist.
+A full-stack wishlist application built with React, Vite, Express, and PostgreSQL. Users can create an account, log in securely, manage wishlist items, and explore them through a mood board style dashboard with item previews, stats, and theme switching.
 
-## Stack
+Live app: https://wishlist-orb-client.onrender.com/
 
-- Frontend: React + Vite + plain JavaScript + CSS
-- Backend: Node.js + Express
+## Current Experience
+
+- Account signup, login, session restore, and logout
+- Private wishlist CRUD for each authenticated user
+- Dashboard with total item count and total wishlist value
+- Mood board style wishlist wall with hover-based item preview
+- Detail card with image, price, and product link
+- Light and dark theme toggle
+- Responsive auth flow and dashboard layout
+
+## Tech Stack
+
+- Frontend: React 18, Vite, CSS, Framer Motion
+- Backend: Node.js, Express
 - Database: PostgreSQL
-- Auth: JWT stored in an HTTP-only cookie
+- Authentication: JWT stored in an HTTP-only cookie
+- Deployment: Render Blueprint via [`render.yaml`]
 
 ## Project Structure
 
@@ -26,69 +39,65 @@ Full-stack wishlist web app with React, Express, PostgreSQL, cookie-based JWT au
 │   ├── middleware
 │   ├── repositories
 │   ├── routes
+│   ├── scripts
 │   ├── services
 │   └── utils
+├── render.yaml
 └── package.json
 ```
 
-## Features
+## Running Locally
 
-- Sign up, log in, session restore, and log out
-- Password hashing with `bcrypt`
-- Protected wishlist CRUD scoped to the authenticated user only
-- Parameterized PostgreSQL queries through `pg`
-- Wishlist orb visualization with slow floating motion and drag interaction
-- Stats for total item count and total wishlist value
-- Future-ready schema for visibility, sharing, and friendships
+### 1. Create the database
 
-## Local Setup
+Create a PostgreSQL database named `wishlist_orb`.
 
-### 1. Create the PostgreSQL database
+### 2. Install dependencies
 
-Using pgAdmin4 or `psql`, create a database named `wishlist_orb`.
-
-### 2. Run the schema
-
-Run the SQL file below against your database:
-
-`server/db/sql/schema.sql`
-
-That creates:
-
-- `users`
-- `wishlist_settings`
-- `wishlist_items`
-- `friendships`
-- `wishlist_shares`
-
-Only `users`, `wishlist_settings`, and `wishlist_items` are used by the MVP. The other tables are included to support later social features without a rewrite.
-
-### 3. Configure environment variables
-
-Server:
-
-1. Copy `server/.env.example` to `server/.env`
-2. Update `DATABASE_URL` and `JWT_SECRET`
-
-Client:
-
-1. Copy `client/.env.example` to `client/.env`
-2. Keep `VITE_API_URL=http://localhost:4000/api` unless you change the server port
-
-### 4. Install dependencies
-
-At the project root:
+From the project root:
 
 ```bash
 npm install
-```
-
-Then install server and client dependencies:
-
-```bash
 cd server && npm install
 cd ../client && npm install
 ```
+
+### 3. Configure environment files
+
+Server:
+
+```bash
+cp server/.env.example server/.env
+```
+
+Update [`server/.env.example`](/Users/amolwalia/Desktop/2.2/comp%20proj/server/.env.example) values as needed, especially:
+
+- `DATABASE_URL`
+- `JWT_SECRET`
+- `CLIENT_URL`
+
+Client:
+
+```bash
+cp client/.env.example client/.env
+```
+
+Default client env:
+
+```env
+VITE_API_URL=http://localhost:4000/api
+```
+
+### 4. Initialize the database schema
+
+Run:
+
+```bash
+cd server
+npm run db:init
+```
+
+This applies [`server/db/sql/schema.sql`](/Users/amolwalia/Desktop/2.2/comp%20proj/server/db/sql/schema.sql).
 
 ### 5. Start the app
 
@@ -98,10 +107,10 @@ From the project root:
 npm run dev
 ```
 
-That starts:
+Local URLs:
 
-- React app on `http://localhost:5173`
-- Express API on `http://localhost:4000`
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:4000`
 
 ## API Overview
 
@@ -119,82 +128,35 @@ That starts:
 - `PUT /api/wishlist/:id`
 - `DELETE /api/wishlist/:id`
 
-All wishlist routes require authentication and always filter by the current `user_id`.
+## Team Contributions
 
-## MVP Notes
+Based on the current git history:
 
-- Wishlist privacy is private by default.
-- The current UI only renders the logged-in user's own orb.
-- The schema already includes hooks for:
-  - visibility settings
-  - direct shares
-  - share links
-  - friend/follow relationships
+- Amol Walia
+  - Built the initial full-stack app structure
+  - Implemented authentication, wishlist CRUD, PostgreSQL integration, and the base responsive UI
+  - Added Render deployment support, schema bootstrap script, environment setup, and deployment documentation
+  - Updated app titles and core naming in the interface
 
-## Future Extension Path
+- Vikatoriia Monakova
+  - Reworked the mood board UI and animations
+  - Updated [`FloatingWishlistBoard.jsx`], dashboard layout behavior, and styling
+  - Improved inventory panel behavior and related frontend presentation
 
-The codebase is organized so you can add social features without changing the core ownership model:
+- Donald Wong
+  - Reworked the front page
+  - Added dark mode support
+  - Implemented the theme toggle and related theme context updates
+  - Contributed dashboard and global styling changes tied to the new theme system
 
-- Add route-level authorization rules on top of `wishlist_settings`
-- Add read-only friend orb endpoints
-- Add share-token endpoints using `wishlist_shares`
-- Add friendship request and acceptance flows using `friendships`
+## Deployment
 
-## Development Notes
+This repo includes a Render Blueprint in [`render.yaml`] for:
 
-- The frontend uses `fetch` with `credentials: include` so the auth cookie is sent automatically.
-- The backend enables CORS for the configured client URL and sets an HTTP-only cookie for the JWT.
-- The orb visualization is implemented with plain React state, CSS 3D transforms, and Fibonacci sphere distribution for item layout.
+- `wishlist-orb-client`
+- `wishlist-orb-api`
+- `wishlist-orb-db`
 
-## Deploying To Render
+The deployed frontend is available here:
 
-This repo now includes a Render Blueprint at `render.yaml` that creates:
-
-- a static site for `client`
-- a web service for `server`
-- a managed PostgreSQL database
-
-### Recommended setup
-
-1. Push this repo to GitHub.
-2. In Render, click `New` -> `Blueprint`.
-3. Select the repo and deploy the `render.yaml` file.
-4. When Render prompts for values:
-   - set `CLIENT_URL` on `wishlist-orb-api` to your frontend URL, for example `https://wishlist-orb-client.onrender.com`
-   - set `VITE_API_URL` on `wishlist-orb-client` to your backend API URL, for example `https://wishlist-orb-api.onrender.com/api`
-5. After the first deploy finishes, if either URL changed from the example above, update the matching environment variable and redeploy the affected service.
-
-### Why the Render setup is split
-
-- `client` is a Vite frontend, so Render should host it as a static site.
-- `server` is an Express API, so Render should host it as a web service.
-- The API starts with `npm run start:render`, which applies `server/db/sql/schema.sql` before the Express server boots.
-
-### Important production detail
-
-Because the frontend and API are usually on different Render subdomains, authentication cookies must be cross-site in production. The server now defaults production cookies to `SameSite=None` with `Secure`, which is required for login sessions to persist across the two Render services.
-
-### Manual alternative
-
-If you do not want to use the Blueprint, create these manually in the Render dashboard:
-
-- Static Site
-  - Root Directory: `client`
-  - Build Command: `npm install && npm run build`
-  - Publish Directory: `dist`
-  - Environment Variable: `VITE_API_URL=https://<your-api-service>.onrender.com/api`
-  - Rewrite Rule: `/*` -> `/index.html`
-
-- Web Service
-  - Root Directory: `server`
-  - Build Command: `npm install`
-  - Start Command: `npm run start:render`
-  - Health Check Path: `/api/health`
-  - Environment Variables:
-    - `NODE_ENV=production`
-    - `CLIENT_URL=https://<your-static-site>.onrender.com`
-    - `JWT_SECRET=<long random secret>`
-    - `JWT_EXPIRES_IN=7d`
-    - `COOKIE_NAME=wishlist_orb_token`
-    - `COOKIE_SAME_SITE=none`
-    - `DATABASE_URL=<Render Postgres internal connection string>`
+https://wishlist-orb-client.onrender.com/
