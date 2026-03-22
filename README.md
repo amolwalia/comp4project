@@ -139,9 +139,11 @@ Based on the current git history:
   - Updated app titles and core naming in the interface
 
 - Viktoriia Monakova
+  - Proposed the core app concept and defined key features, focusing on creating a more interactive and visually engaging wishlist experience.
   - Reworked the mood board UI and animations
   - Updated [`FloatingWishlistBoard.jsx`], dashboard layout behavior, and styling
   - Improved inventory panel behavior and related frontend presentation
+  - Documentation and report
 
 - Donald Wong
   - Reworked the front page
